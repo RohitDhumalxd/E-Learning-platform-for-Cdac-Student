@@ -1,15 +1,20 @@
 package com.eLearning.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.eLearning.exceptions.*;
+import com.eLearning.config.AppConstants;
+import com.eLearning.entities.Role;
 import com.eLearning.entities.Student;
 import com.eLearning.payloads.StudentDto;
+import com.eLearning.repositories.RoleRepo;
 import com.eLearning.repositories.StudentRepo;
 import com.eLearning.services.StudentService;
 
@@ -21,6 +26,12 @@ public class StudentServiceImpl implements StudentService {
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private RoleRepo roleRepo;
 
 	@Override
 	public StudentDto createStudent(StudentDto studentDto) {
@@ -96,6 +107,22 @@ public class StudentServiceImpl implements StudentService {
 		 */
 		StudentDto dto=this.modelMapper.map(s1, StudentDto.class);
 		return dto;
+	}
+
+	@Override
+	public StudentDto registerNewUser(StudentDto studentDto) {
+		Student s1 = this.modelMapper.map(studentDto, Student.class);
+		
+		// Encoded normal password into encrypted string/password
+		s1.setPassword(this.passwordEncoder.encode(s1.getPassword()));
+		
+		// role
+		Role role = this.roleRepo.findById(AppConstants.NORMAL_USER).get();
+		s1.getRoles().add(role);
+		
+		Student newStudentUser = this.studentRepo.save(s1);
+		
+		return this.modelMapper.map(newStudentUser, StudentDto.class);
 	}
 
 }

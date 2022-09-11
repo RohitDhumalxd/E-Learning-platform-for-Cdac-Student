@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,8 +45,9 @@ public class StudentController {
 		
 	}
 	
-	
+	// Only Access by Admin
 	// DELETE - delete Student / user
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{studentID}")
 	public ResponseEntity<ApiResponse> deleteStudent(@PathVariable ("studentID") Integer sId){
 		this.studentService.deleteStudent(sId);

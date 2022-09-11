@@ -6,6 +6,8 @@ import com.eLearning.payloads.StudentDto;
 
 public interface StudentService {
 	
+	StudentDto registerNewUser(StudentDto student);
+	
 	StudentDto createStudent(StudentDto student); 
 	
 	StudentDto updateStudent(StudentDto student,Integer studentID); 
