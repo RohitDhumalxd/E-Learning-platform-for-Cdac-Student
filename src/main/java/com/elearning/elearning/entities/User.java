@@ -27,7 +27,8 @@ public class User
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
+
     @Column(name = "user_name", nullable = false, length = 100)
     private String name;
 
@@ -40,7 +41,14 @@ public class User
     @Column(name = "user_type", nullable = false, length = 20)
     private String userType;
 
-   // @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @Column(name = "branch_id", nullable = false, length = 100)
+    private String branchId;
+
+    @Column(name = "course_id", nullable = false, length = 100)
+    private String courseId;
+
+
+    // @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Column(name = "dob")
    // @Temporal(TemporalType.DATE)
     private String dob;

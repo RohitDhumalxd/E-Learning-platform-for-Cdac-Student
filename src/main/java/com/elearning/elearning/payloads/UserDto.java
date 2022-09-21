@@ -32,6 +32,11 @@ public class UserDto {
 	@NotEmpty
 	private String userType;
 
+	@NotEmpty
+	private int branch;
+
+	@NotEmpty
+	private int course;
 
 	private String bio;
 
